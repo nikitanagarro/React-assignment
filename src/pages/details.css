@@ -1,0 +1,38 @@
+.container {
+    margin: 50px;
+    padding: 30px;
+    border: 7px solid transparent;
+    border-image: linear-gradient(to right, #662D8C 0%, #ED1E79 100%) 1;
+}
+
+.header {
+    display: flex;
+}
+
+.thumbnail {
+    display: flex;
+    flex: 1;
+    margin: 20px;
+}
+
+.title {
+    display: flex;
+}
+
+.list {
+    text-align: left;
+}
+
+@media (max-width: 640px) {
+    .container {
+        margin: 0;
+    }
+
+    .header {
+        flex-direction: column;
+    }
+
+    figure {
+        margin: 0;
+    }
+}

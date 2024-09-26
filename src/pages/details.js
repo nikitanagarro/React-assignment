@@ -1,0 +1,41 @@
+import React, { useEffect, useState } from 'react'
+import './details.css'
+
+export default function DetailView() {
+  const [article, setArticle] = useState({})
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("detail"))
+    if (data) {
+      setArticle(data.row)
+    }
+  }, [])
+
+  return <>
+    <div className='container'>
+      <div className='header'>
+        <figure >
+          <img src={article?.media?.[0]?.['media-metadata']?.[2]?.['url']} alt="" style={{ width: '100%' }} />
+          <figcaption> {article?.media?.[0]?.caption}</figcaption>
+        </figure>
+
+        <div>
+          <h1 className='title'> {article?.title}</h1>
+          <h5> -{article?.byline}</h5>
+          <p> Section : {article?.section}</p>
+          <p> Published On: {article?.published_date} </p>
+          <p className='list'> Facets: </p>
+          <ul className='list'>
+            {article?.des_facet?.map(item => <li key={item}> {item} </li>)}
+          </ul>
+        </div>
+      </div>
+      <h2> {article?.abstract} </h2>
+
+      <p>Keywords:  {article?.adx_keywords}</p>
+
+      <h6> Read full article <a href={article?.url}>here</a></h6>
+    </div>
+  </>
+}
+
