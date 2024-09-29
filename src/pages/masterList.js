@@ -42,8 +42,8 @@ export default function MasterList() {
   }, [dispatch]);
 
   const handleRowClick = (data) => {
-    localStorage.setItem("detail", JSON.stringify(data));
-    navigate("/details");
+    // localStorage.setItem("detail", JSON.stringify(data));
+    navigate(`/details/${data?.id}`);
   };
 
   return (

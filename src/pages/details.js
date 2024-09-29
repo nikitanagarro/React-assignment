@@ -1,18 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import './details.css'
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 export default function DetailView() {
-  const [article, setArticle] = useState({})
+  const params = useParams();
+  const { articleList } = useSelector((state) => state);
+  const [article, setArticle] = useState(null)
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("detail"))
-    if (data) {
-      setArticle(data.row)
+    if (articleList?.data?.results) {
+      const findArticle = articleList?.data?.results?.filter(items => items.id == params.id)
+      setArticle(findArticle[0])      
     }
   }, [])
 
+
+
   return <>
-    <div className='container'>
+    {article ? <div className='container'>
       <div className='header'>
         <figure >
           <img src={article?.media?.[0]?.['media-metadata']?.[2]?.['url']} alt="" style={{ width: '100%' }} />
@@ -35,7 +41,7 @@ export default function DetailView() {
       <p>Keywords:  {article?.adx_keywords}</p>
 
       <h6> Read full article <a href={article?.url}>here</a></h6>
-    </div>
+    </div> : <h1> Article with id {params.id} not found. </h1>}
   </>
 }
 

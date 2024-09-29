@@ -12,14 +12,17 @@ const articlesSlice = createSlice({
     },
     reducers: {},
     extraReducers: (builder) => {
-        builder.addCase(fetchAllData.fulfilled, (state, action) => {
-            state.data = action.payload
-            state.fetchStatus = 'success'
-        }).addCase(fetchAllData.pending, (state) => {
-            state.fetchStatus = 'loading'
-        }).addCase(fetchAllData.rejected, (state) => {
-            state.fetchStatus = 'error'
-        })
+        builder
+            .addCase(fetchAllData.fulfilled, (state, action) => {
+                state.data = action.payload;
+                state.fetchStatus = 'success';
+            })
+            .addCase(fetchAllData.pending, (state) => {
+                state.fetchStatus = 'loading';
+            })
+            .addCase(fetchAllData.rejected, (state) => {
+                state.fetchStatus = 'error';
+            });
     }
 
 })
