@@ -3,52 +3,35 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllData } from "../data/articleSlice";
+import Skeleton from '@mui/material/Skeleton';
+import columns, { FETCH_URL } from "../constants";
+import { Box } from "@mui/material";
 
-const columns = [
-  {
-    field: "media",
-    headerName: "Thumbnail",
-    renderCell: (params) => <img src={params?.["row"]?.["media"]?.[0]?.["media-metadata"]?.[0]?.["url"]} alt="" />,
-    width: 150,
-    height: 150,
-  },
-
-  { field: "title", headerName: "Title", width: 550 },
-  {
-    field: "byline",
-    headerName: "Written By",
-    width: 300,
-  },
-  {
-    field: "published_date",
-    headerName: "Published On",
-    width: 150,
-  },
-  {
-    field: "section",
-    headerName: "Section",
-    width: 100,
-  },
-];
-
+function Loading() {
+  return <Box display="flex"
+    justifyContent="center"
+    flexDirection="column"
+    alignItems="center">
+    <h2>Loading article list...</h2>
+    <Skeleton variant="rectangular" animation="wave" width={'90%'} height={500} />
+  </Box>
+}
 
 export default function MasterList() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const { articleList } = useSelector((state) => state);
-
   useEffect(() => {
-    dispatch(fetchAllData('https://api.nytimes.com/svc/mostpopular/v2/viewed/1.json?api-key=LGAjaDj3YPOclIcIoBAXXKtZSo8eHfjY'))
+    dispatch(fetchAllData(`${FETCH_URL}${process.env.REACT_APP_API_SECRET_KEY}`))
   }, [dispatch]);
 
   const handleRowClick = (data) => {
-    // localStorage.setItem("detail", JSON.stringify(data));
     navigate(`/details/${data?.id}`);
   };
 
   return (
     <>
-      <h1 style={{ fontFamily: "Bravecho", fontWeight: 400 }}>NY Times Most Viewed Articles</h1 >
+      <h1>NY Times Most Viewed Articles</h1 >
 
       {articleList?.fetchStatus === 'success' &&
         <DataGrid
@@ -66,7 +49,7 @@ export default function MasterList() {
           rowHeight={90}
         />
       }
-      {articleList?.fetchStatus === 'loading' && <h1> Loading Article List... </h1>}
+      {articleList?.fetchStatus === 'loading' && <Loading />}
       {articleList?.fetchStatus === 'error' && <h3> There was an error fetching data. <button onClick={() => window.location.reload(false)}> Retry </button></h3>}
     </>
   );
